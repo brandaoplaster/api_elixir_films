@@ -1,0 +1,26 @@
+version: '3'
+services:
+  postgres:
+    image: 'postgres:9.5'
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    ports:
+      - "5432"
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: trust
+
+  web:
+    build: .
+    command: mix phx.server  
+    volumes:
+      - .:/api_elixir_films
+    ports:
+      - "4000:4000"
+    links:
+      - postgres
+    depends_on:
+      - postgres
+
+volumes:
+  postgres:
+
